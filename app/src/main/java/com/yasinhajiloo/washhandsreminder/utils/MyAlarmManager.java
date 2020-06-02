@@ -12,8 +12,8 @@ public class MyAlarmManager {
         return (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
     }
 
-    public static PendingIntent getPendingIntent(Context context , int id){
+    public static PendingIntent getPendingIntent(Context context , int id , int flag ){
         Intent intent = new Intent(context , AlarmReceiver.class);
-         return PendingIntent.getBroadcast(context , id , intent , PendingIntent.FLAG_UPDATE_CURRENT);
+         return PendingIntent.getBroadcast(context , id , intent , flag );
     }
 }

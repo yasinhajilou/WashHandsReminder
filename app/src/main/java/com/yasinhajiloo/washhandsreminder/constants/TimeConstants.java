@@ -1,4 +1,4 @@
-package com.yasinhajiloo.washhandsreminder.utils;
+package com.yasinhajiloo.washhandsreminder.constants;
 
 public class TimeConstants {
     public static final long HALF_HOUR = 30 * 60 * 1000;

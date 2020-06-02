@@ -18,10 +18,10 @@ import android.widget.Toast;
 import com.yasinhajiloo.washhandsreminder.AlarmReceiver;
 import com.yasinhajiloo.washhandsreminder.SharedViewModel;
 import com.yasinhajiloo.washhandsreminder.databinding.ActivityMainBinding;
-import com.yasinhajiloo.washhandsreminder.utils.AlarmMode;
+import com.yasinhajiloo.washhandsreminder.constants.AlarmMode;
 import com.yasinhajiloo.washhandsreminder.utils.MyAlarmManager;
-import com.yasinhajiloo.washhandsreminder.utils.MySharedPreferenceConstants;
-import com.yasinhajiloo.washhandsreminder.utils.TimeConstants;
+import com.yasinhajiloo.washhandsreminder.constants.MySharedPreferenceConstants;
+import com.yasinhajiloo.washhandsreminder.constants.TimeConstants;
 import com.yasinhajiloo.washhandsreminder.utils.TimeDefinerString;
 
 public class MainActivity extends AppCompatActivity {
@@ -48,6 +48,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         mBinding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(mBinding.getRoot());
+
+
         mSharedPreferences = getSharedPreferences(MySharedPreferenceConstants.sharedPreferenceName, MODE_PRIVATE);
         mEditor = mSharedPreferences.edit();
 
@@ -58,8 +60,8 @@ public class MainActivity extends AppCompatActivity {
         savedTime = mSharedPreferences.getLong(MySharedPreferenceConstants.KEY_LONG_TIME, 0);
         mSharedViewModel.setDataTime(savedTime);
 
-        Intent intent = new Intent(this, AlarmReceiver.class);
-        if (PendingIntent.getBroadcast(getApplicationContext(), PENDING_ID, intent, PendingIntent.FLAG_NO_CREATE) != null) {
+        //checking for existing alarm
+        if (MyAlarmManager.getPendingIntent(this, PENDING_ID, PendingIntent.FLAG_NO_CREATE) != null) {
             mAlarmMode = AlarmMode.ON;
             mSharedViewModel.setAlarmStatus(true);
             animateSwitchToggle(ANIM_ON_START, ANIM_ON_END);
@@ -76,12 +78,13 @@ public class MainActivity extends AppCompatActivity {
                 mBinding.tvMainStatus.setText(TimeDefinerString.getTimeDefiner(aLong));
                 if (aLong > 0) {
                     if (status) {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                            alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + aLong, aLong, MyAlarmManager.getPendingIntent(getApplicationContext(), PENDING_ID));
-                        } else
-                            alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + aLong, aLong, MyAlarmManager.getPendingIntent(getApplicationContext(), PENDING_ID));
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+                            alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + aLong, aLong, MyAlarmManager.getPendingIntent(getApplicationContext(), PENDING_ID , PendingIntent.FLAG_UPDATE_CURRENT));
+                        else
+                            alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + aLong, aLong, MyAlarmManager.getPendingIntent(getApplicationContext(), PENDING_ID , PendingIntent.FLAG_UPDATE_CURRENT));
                     }
                 }
+                //save last selected time
                 mEditor.putLong(MySharedPreferenceConstants.KEY_LONG_TIME, aLong);
                 mEditor.apply();
                 savedTime = aLong;
@@ -139,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
                 mSharedViewModel.setDataTime(0);
                 mSharedViewModel.setAlarmStatus(false);
                 if (alarmManager != null)
-                    alarmManager.cancel(MyAlarmManager.getPendingIntent(getApplicationContext(), PENDING_ID));
+                    alarmManager.cancel(MyAlarmManager.getPendingIntent(getApplicationContext(), PENDING_ID , PendingIntent.FLAG_UPDATE_CURRENT));
                 break;
 
             // current state it's off so we should turn on the switch

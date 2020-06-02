@@ -1,4 +1,4 @@
-package com.yasinhajiloo.washhandsreminder.utils;
+package com.yasinhajiloo.washhandsreminder.constants;
 
 public class MySharedPreferenceConstants {
     public static String sharedPreferenceName = "myPref";
