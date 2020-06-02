@@ -82,7 +82,6 @@ public class MainActivity extends AppCompatActivity {
                             alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + aLong, aLong, MyAlarmManager.getPendingIntent(getApplicationContext(), PENDING_ID));
                     }
                 }
-
                 mEditor.putLong(MySharedPreferenceConstants.KEY_LONG_TIME, aLong);
                 mEditor.apply();
                 savedTime = aLong;
@@ -113,8 +112,18 @@ public class MainActivity extends AppCompatActivity {
         mBinding.ivGithub.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Uri uri = Uri.parse("http://www.google.com"); 
+                Uri uri = Uri.parse("https://github.com/yasinhajiloo/WashHandsReminder");
                 Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                startActivity(intent);
+            }
+        });
+
+        mBinding.ivStar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Intent.ACTION_EDIT);
+                intent.setData(Uri.parse("bazaar://details?id=" + getApplicationContext().getPackageName()));
+                intent.setPackage("com.farsitel.bazaar");
                 startActivity(intent);
             }
         });
