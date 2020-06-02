@@ -65,17 +65,14 @@ public class MainActivity extends AppCompatActivity {
         mIntent = new Intent(getApplicationContext() , AlarmReceiver.class);
 
         //checking for existing alarm
-        if (PendingIntent.getBroadcast(getApplicationContext() , PENDING_ID , mIntent , PendingIntent.FLAG_NO_CREATE) != null) {
+        if (MyAlarmManager.getPendingIntent(getApplicationContext() , PENDING_ID , PendingIntent.FLAG_NO_CREATE) != null) {
             mAlarmMode = AlarmMode.ON;
             mSharedViewModel.setAlarmStatus(true);
             animateSwitchToggle(ANIM_ON_START, ANIM_ON_END);
-            Toast.makeText(this, "alarm is ok", Toast.LENGTH_SHORT).show();
         } else {
             mAlarmMode = AlarmMode.OFF;
             mSharedViewModel.setAlarmStatus(false);
             animateSwitchToggle(ANIM_OFF_START, ANIM_OFF_END);
-            Toast.makeText(this, "alarm is not", Toast.LENGTH_SHORT).show();
-
         }
 
         mSharedViewModel.setDataTime(savedTime);
@@ -85,9 +82,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onChanged(Long aLong) {
                 if (aLong > 0 && mAlarmMode == AlarmMode.ON) {
-                    Toast.makeText(MainActivity.this, "here", Toast.LENGTH_SHORT).show();
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-                        alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + aLong, aLong, MyAlarmManager.getPendingIntent(getApplicationContext(), PENDING_ID, PendingIntent.FLAG_UPDATE_CURRENT));
+                        alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + aLong, aLong, MyAlarmManager.getPendingIntent(getApplicationContext() , PENDING_ID , PendingIntent.FLAG_UPDATE_CURRENT));
                     else
                         alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + aLong, aLong, MyAlarmManager.getPendingIntent(getApplicationContext(), PENDING_ID, PendingIntent.FLAG_UPDATE_CURRENT));
 
