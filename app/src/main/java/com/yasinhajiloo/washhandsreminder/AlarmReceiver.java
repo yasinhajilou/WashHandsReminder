@@ -46,7 +46,6 @@ public class AlarmReceiver extends BroadcastReceiver {
         PendingIntent pendingIntent = PendingIntent.getActivity(context, NOTIFICATION_ID, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_REMINDER)
                 .setContentTitle("یادت نره دستات رو بشوری!")
-                .setContentText("یکی از اصلی ترین راه های مبارزه با کرونا شست و شو یا ضدعفونی کردن دسته.")
                 .setSmallIcon(R.drawable.ic_washing_hands)
                 .setAutoCancel(true)
                 .setContentIntent(pendingIntent)
