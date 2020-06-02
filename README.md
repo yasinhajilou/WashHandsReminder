@@ -6,8 +6,8 @@ reminds you to wash your hand frequently
  here for remindig you to wash your hand when you are out of your mind :)
  
  <p float="left">
- <img src="images/Screenshot_1591112234.png" width="140" height="280">
- <img src="images/Screenshot_1591112254.png" width="140" height="280">
- <img src="images/Screenshot_1591112282.png" width="140" height="280">
+ <img src="images/Screenshot_1591112234.png" width="280" height="560">
+ <img src="images/Screenshot_1591112254.png" width="280" height="560">
+ <img src="images/Screenshot_1591112282.png" width="280" height="560">
 </p>
 
