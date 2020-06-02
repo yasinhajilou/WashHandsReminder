@@ -8,6 +8,7 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -43,6 +44,8 @@ public class MainActivity extends AppCompatActivity {
     private AlarmManager alarmManager;
     boolean status = false;
 
+    private Intent mIntent;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,32 +61,40 @@ public class MainActivity extends AppCompatActivity {
         mSharedViewModel = new ViewModelProvider(this).get(SharedViewModel.class);
 
         savedTime = mSharedPreferences.getLong(MySharedPreferenceConstants.KEY_LONG_TIME, 0);
-        mSharedViewModel.setDataTime(savedTime);
+
+        mIntent = new Intent(getApplicationContext() , AlarmReceiver.class);
 
         //checking for existing alarm
-        if (MyAlarmManager.getPendingIntent(this, PENDING_ID, PendingIntent.FLAG_NO_CREATE) != null) {
+        if (PendingIntent.getBroadcast(getApplicationContext() , PENDING_ID , mIntent , PendingIntent.FLAG_NO_CREATE) != null) {
             mAlarmMode = AlarmMode.ON;
             mSharedViewModel.setAlarmStatus(true);
             animateSwitchToggle(ANIM_ON_START, ANIM_ON_END);
+            Toast.makeText(this, "alarm is ok", Toast.LENGTH_SHORT).show();
         } else {
             mAlarmMode = AlarmMode.OFF;
             mSharedViewModel.setAlarmStatus(false);
             animateSwitchToggle(ANIM_OFF_START, ANIM_OFF_END);
+            Toast.makeText(this, "alarm is not", Toast.LENGTH_SHORT).show();
+
         }
+
+        mSharedViewModel.setDataTime(savedTime);
 
 
         mSharedViewModel.getDataTime().observe(this, new Observer<Long>() {
             @Override
             public void onChanged(Long aLong) {
-                mBinding.tvMainStatus.setText(TimeDefinerString.getTimeDefiner(aLong));
-                if (aLong > 0) {
-                    if (status) {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-                            alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + aLong, aLong, MyAlarmManager.getPendingIntent(getApplicationContext(), PENDING_ID , PendingIntent.FLAG_UPDATE_CURRENT));
-                        else
-                            alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + aLong, aLong, MyAlarmManager.getPendingIntent(getApplicationContext(), PENDING_ID , PendingIntent.FLAG_UPDATE_CURRENT));
-                    }
-                }
+                if (aLong > 0 && mAlarmMode == AlarmMode.ON) {
+                    Toast.makeText(MainActivity.this, "here", Toast.LENGTH_SHORT).show();
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+                        alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + aLong, aLong, MyAlarmManager.getPendingIntent(getApplicationContext(), PENDING_ID, PendingIntent.FLAG_UPDATE_CURRENT));
+                    else
+                        alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + aLong, aLong, MyAlarmManager.getPendingIntent(getApplicationContext(), PENDING_ID, PendingIntent.FLAG_UPDATE_CURRENT));
+
+                    mBinding.tvMainStatus.setText(TimeDefinerString.getTimeDefiner(aLong));
+                }else
+                    mBinding.tvMainStatus.setText(TimeDefinerString.getTimeDefiner(0));
+
                 //save last selected time
                 mEditor.putLong(MySharedPreferenceConstants.KEY_LONG_TIME, aLong);
                 mEditor.apply();
@@ -124,28 +135,32 @@ public class MainActivity extends AppCompatActivity {
         mBinding.ivStar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                PackageManager packageManager = getApplicationContext().getPackageManager();
                 Intent intent = new Intent(Intent.ACTION_EDIT);
                 intent.setData(Uri.parse("bazaar://details?id=" + getApplicationContext().getPackageName()));
                 intent.setPackage("com.farsitel.bazaar");
-                startActivity(intent);
+                if (intent.resolveActivity(packageManager) != null)
+                    startActivity(intent);
+                else {
+                    Toast.makeText(MainActivity.this, "برنامه مناسبی پیدا نشد!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
 
     private void handleAlarmSwitch() {
         switch (mAlarmMode) {
-            // current state it's on so we should turn off the switch
+            // current state it's on so we should turn off the alarm
             case ON:
-                Toast.makeText(this, "Turning off", Toast.LENGTH_SHORT).show();
                 animateSwitchToggle(ANIM_OFF_START, ANIM_OFF_END);
                 mAlarmMode = AlarmMode.OFF;
                 mSharedViewModel.setDataTime(0);
                 mSharedViewModel.setAlarmStatus(false);
                 if (alarmManager != null)
-                    alarmManager.cancel(MyAlarmManager.getPendingIntent(getApplicationContext(), PENDING_ID , PendingIntent.FLAG_UPDATE_CURRENT));
+                    alarmManager.cancel(MyAlarmManager.getPendingIntent(getApplicationContext(), PENDING_ID, PendingIntent.FLAG_UPDATE_CURRENT));
                 break;
 
-            // current state it's off so we should turn on the switch
+            // current state it's off so we should turn on the alarm
             case OFF:
                 animateSwitchToggle(ANIM_ON_START, ANIM_ON_END);
                 mAlarmMode = AlarmMode.ON;
@@ -154,6 +169,7 @@ public class MainActivity extends AppCompatActivity {
                     mSharedViewModel.setDataTime(savedTime);
                 } else {
                     mSharedViewModel.setAlarmStatus(true);
+                    //setting one hour by default when user selected nothing for time
                     mSharedViewModel.setDataTime(TimeConstants.ONE_HOUR);
                 }
                 break;

@@ -5,7 +5,7 @@ import com.yasinhajiloo.washhandsreminder.constants.TimeConstants;
 public class TimeDefinerString {
     private static String halfHour = "هر 30 دقیقه";
     private static String anHour = "هر 1 ساعت";
-    private static String اanHourAndHalf = "هر 1 و نیم ساعت";
+    private static String اanHourAndHalf = "هر 1 ساعت و نیم ";
     private static String twoHour = "هر 2 ساعت";
     private static String threeHour = "هر 3 ساعت";
     private static String noTime = "یادآوری تنظیم نشده";
