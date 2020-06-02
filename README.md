@@ -5,7 +5,9 @@ reminds you to wash your hand frequently
  One of the most important ways to preventing from infection is washing our hands frequently so this reminder  is
  here for remindig you to wash your hand when you are out of your mind :)
  
- 
- <img src="images/Screenshot_1591112234.png" width="70" height="140">
- <img src="images/Screenshot_1591112254.png" width="70" height="140">
- <img src="images/Screenshot_1591112282.png" width="70" height="140">
+ <p float="left">
+ <img src="images/Screenshot_1591112234.png" width="140" height="280">
+ <img src="images/Screenshot_1591112254.png" width="140" height="280">
+ <img src="images/Screenshot_1591112282.png" width="140" height="280">
+</p>
+
