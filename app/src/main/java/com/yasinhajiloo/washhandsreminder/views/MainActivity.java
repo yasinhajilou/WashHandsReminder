@@ -152,8 +152,11 @@ public class MainActivity extends AppCompatActivity {
                 mAlarmMode = AlarmMode.OFF;
                 mSharedViewModel.setDataTime(0);
                 mSharedViewModel.setAlarmStatus(false);
-                if (alarmManager != null)
-                    alarmManager.cancel(MyAlarmManager.getPendingIntent(getApplicationContext(), PENDING_ID, PendingIntent.FLAG_UPDATE_CURRENT));
+                if (alarmManager != null){
+                    PendingIntent pendingIntent = MyAlarmManager.getPendingIntent(getApplicationContext(), PENDING_ID, PendingIntent.FLAG_UPDATE_CURRENT);
+                    alarmManager.cancel(pendingIntent);
+                    pendingIntent.cancel();
+                }
                 break;
 
             // current state it's off so we should turn on the alarm
