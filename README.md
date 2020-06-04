@@ -7,9 +7,9 @@ One of the most important ways to prevent infection is washing our hands frequen
 here to remind you to wash your hands :)
  
 <p float="left">
- <img src="images/Screenshot_1591112234.png" width="280" height="560">
- <img src="images/Screenshot_1591112254.png" width="280" height="560">
- <img src="images/Screenshot_1591112282.png" width="280" height="560">
+ <img src="images/shot1.png" width="280" height="560">
+ <img src="images/shot2.png" width="280" height="560">
+ <img src="images/shot3.png" width="280" height="560">
 </p>
 
 # Dependencies and Libraries
