@@ -20,6 +20,7 @@ import com.yasinhajiloo.washhandsreminder.AlarmReceiver;
 import com.yasinhajiloo.washhandsreminder.SharedViewModel;
 import com.yasinhajiloo.washhandsreminder.databinding.ActivityMainBinding;
 import com.yasinhajiloo.washhandsreminder.constants.AlarmMode;
+import com.yasinhajiloo.washhandsreminder.utils.BootHandler;
 import com.yasinhajiloo.washhandsreminder.utils.MyAlarmManager;
 import com.yasinhajiloo.washhandsreminder.constants.MySharedPreferenceConstants;
 import com.yasinhajiloo.washhandsreminder.constants.TimeConstants;
@@ -46,6 +47,8 @@ public class MainActivity extends AppCompatActivity {
 
     private Intent mIntent;
 
+    private BootHandler mBootHandler;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,10 +65,10 @@ public class MainActivity extends AppCompatActivity {
 
         savedTime = mSharedPreferences.getLong(MySharedPreferenceConstants.KEY_LONG_TIME, 0);
 
-        mIntent = new Intent(getApplicationContext() , AlarmReceiver.class);
+        mIntent = new Intent(getApplicationContext(), AlarmReceiver.class);
 
         //checking for existing alarm
-        if (MyAlarmManager.getPendingIntent(getApplicationContext() , PENDING_ID , PendingIntent.FLAG_NO_CREATE) != null) {
+        if (MyAlarmManager.getPendingIntent(getApplicationContext(), PENDING_ID, PendingIntent.FLAG_NO_CREATE) != null) {
             mAlarmMode = AlarmMode.ON;
             mSharedViewModel.setAlarmStatus(true);
             animateSwitchToggle(ANIM_ON_START, ANIM_ON_END);
@@ -78,17 +81,19 @@ public class MainActivity extends AppCompatActivity {
         mSharedViewModel.setDataTime(savedTime);
 
 
+        mBootHandler = new BootHandler(this);
+
         mSharedViewModel.getDataTime().observe(this, new Observer<Long>() {
             @Override
             public void onChanged(Long aLong) {
                 if (aLong > 0 && mAlarmMode == AlarmMode.ON) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-                        alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + aLong, aLong, MyAlarmManager.getPendingIntent(getApplicationContext() , PENDING_ID , PendingIntent.FLAG_UPDATE_CURRENT));
+                        alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + aLong, aLong, MyAlarmManager.getPendingIntent(getApplicationContext(), PENDING_ID, PendingIntent.FLAG_UPDATE_CURRENT));
                     else
                         alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + aLong, aLong, MyAlarmManager.getPendingIntent(getApplicationContext(), PENDING_ID, PendingIntent.FLAG_UPDATE_CURRENT));
 
                     mBinding.tvMainStatus.setText(TimeDefinerString.getTimeDefiner(aLong));
-                }else
+                } else
                     mBinding.tvMainStatus.setText(TimeDefinerString.getTimeDefiner(0));
 
                 //save last selected time
@@ -152,7 +157,8 @@ public class MainActivity extends AppCompatActivity {
                 mAlarmMode = AlarmMode.OFF;
                 mSharedViewModel.setDataTime(0);
                 mSharedViewModel.setAlarmStatus(false);
-                if (alarmManager != null){
+                if (alarmManager != null) {
+                    mBootHandler.disableReceiver();
                     PendingIntent pendingIntent = MyAlarmManager.getPendingIntent(getApplicationContext(), PENDING_ID, PendingIntent.FLAG_UPDATE_CURRENT);
                     alarmManager.cancel(pendingIntent);
                     pendingIntent.cancel();
@@ -163,6 +169,7 @@ public class MainActivity extends AppCompatActivity {
             case OFF:
                 animateSwitchToggle(ANIM_ON_START, ANIM_ON_END);
                 mAlarmMode = AlarmMode.ON;
+                mBootHandler.enableReceiver();
                 if (savedTime > 0) {
                     mSharedViewModel.setAlarmStatus(true);
                     mSharedViewModel.setDataTime(savedTime);
