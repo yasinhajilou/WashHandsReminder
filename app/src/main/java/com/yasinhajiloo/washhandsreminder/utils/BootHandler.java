@@ -4,7 +4,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.pm.PackageManager;
 
-import com.yasinhajiloo.washhandsreminder.BootReceiver;
+import com.yasinhajiloo.washhandsreminder.receivers.BootReceiver;
 
 public class BootHandler {
     private ComponentName mComponentName;

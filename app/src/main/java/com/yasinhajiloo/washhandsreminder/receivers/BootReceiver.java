@@ -1,4 +1,4 @@
-package com.yasinhajiloo.washhandsreminder;
+package com.yasinhajiloo.washhandsreminder.receivers;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -24,7 +24,7 @@ public class BootReceiver extends BroadcastReceiver {
             mSharedPreferences = context.getSharedPreferences(MySharedPreferenceConstants.sharedPreferenceName, Context.MODE_PRIVATE);
             mAlarmManager = MyAlarmManager.getAlarmManager(context);
             long time = mSharedPreferences.getLong(MySharedPreferenceConstants.KEY_LONG_TIME, 0);
-            if (time != 0){
+            if (time > 0){
                 mAlarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
                         SystemClock.elapsedRealtime() + time , time , MyAlarmManager.getPendingIntent(context ,
                                 PendingIntent.FLAG_UPDATE_CURRENT));

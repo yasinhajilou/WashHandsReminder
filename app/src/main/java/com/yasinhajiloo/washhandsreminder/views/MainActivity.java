@@ -10,13 +10,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.view.View;
 import android.widget.Toast;
 
-import com.yasinhajiloo.washhandsreminder.AlarmReceiver;
+import com.yasinhajiloo.washhandsreminder.receivers.AlarmReceiver;
 import com.yasinhajiloo.washhandsreminder.SharedViewModel;
 import com.yasinhajiloo.washhandsreminder.databinding.ActivityMainBinding;
 import com.yasinhajiloo.washhandsreminder.constants.AlarmMode;
