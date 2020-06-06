@@ -39,7 +39,6 @@ public class MainActivity extends AppCompatActivity {
     private float ANIM_OFF_END = 1f;
 
     private long savedTime;
-    private int PENDING_ID = 9876;
 
     private SharedViewModel mSharedViewModel;
     private AlarmManager alarmManager;
@@ -68,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
         mIntent = new Intent(getApplicationContext(), AlarmReceiver.class);
 
         //checking for existing alarm
-        if (MyAlarmManager.getPendingIntent(getApplicationContext(), PENDING_ID, PendingIntent.FLAG_NO_CREATE) != null) {
+        if (MyAlarmManager.getPendingIntent(getApplicationContext(), PendingIntent.FLAG_NO_CREATE) != null) {
             mAlarmMode = AlarmMode.ON;
             mSharedViewModel.setAlarmStatus(true);
             animateSwitchToggle(ANIM_ON_START, ANIM_ON_END);
@@ -87,11 +86,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onChanged(Long aLong) {
                 if (aLong > 0 && mAlarmMode == AlarmMode.ON) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-                        alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + aLong, aLong, MyAlarmManager.getPendingIntent(getApplicationContext(), PENDING_ID, PendingIntent.FLAG_UPDATE_CURRENT));
-                    else
-                        alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + aLong, aLong, MyAlarmManager.getPendingIntent(getApplicationContext(), PENDING_ID, PendingIntent.FLAG_UPDATE_CURRENT));
-
+                    alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                            SystemClock.elapsedRealtime() + aLong,
+                            aLong,
+                            MyAlarmManager.getPendingIntent(getApplicationContext(),
+                            PendingIntent.FLAG_UPDATE_CURRENT));
                     mBinding.tvMainStatus.setText(TimeDefinerString.getTimeDefiner(aLong));
                 } else
                     mBinding.tvMainStatus.setText(TimeDefinerString.getTimeDefiner(0));
@@ -159,7 +158,7 @@ public class MainActivity extends AppCompatActivity {
                 mSharedViewModel.setAlarmStatus(false);
                 if (alarmManager != null) {
                     mBootHandler.disableReceiver();
-                    PendingIntent pendingIntent = MyAlarmManager.getPendingIntent(getApplicationContext(), PENDING_ID, PendingIntent.FLAG_UPDATE_CURRENT);
+                    PendingIntent pendingIntent = MyAlarmManager.getPendingIntent(getApplicationContext(), PendingIntent.FLAG_UPDATE_CURRENT);
                     alarmManager.cancel(pendingIntent);
                     pendingIntent.cancel();
                 }

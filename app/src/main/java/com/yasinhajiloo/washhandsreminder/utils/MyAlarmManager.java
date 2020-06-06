@@ -8,12 +8,14 @@ import android.content.Intent;
 import com.yasinhajiloo.washhandsreminder.AlarmReceiver;
 
 public class MyAlarmManager {
+
     public static AlarmManager getAlarmManager(Context context){
         return (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
     }
 
-    public static PendingIntent getPendingIntent(Context context , int id , int flag ){
+    public static PendingIntent getPendingIntent(Context context, int flag ){
         Intent intent = new Intent(context , AlarmReceiver.class);
-         return PendingIntent.getBroadcast(context , id , intent , flag );
+        int PENDING_ID = 9876;
+        return PendingIntent.getBroadcast(context , PENDING_ID, intent , flag );
     }
 }
