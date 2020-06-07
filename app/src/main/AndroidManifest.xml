@@ -16,7 +16,7 @@
         android:theme="@style/AppTheme">
         <receiver
             android:name=".receivers.BootReceiver"
-            android:enabled="true">
+            android:enabled="false">
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT"/>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>

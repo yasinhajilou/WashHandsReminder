@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -19,7 +20,7 @@ import com.yasinhajiloo.washhandsreminder.receivers.AlarmReceiver;
 import com.yasinhajiloo.washhandsreminder.SharedViewModel;
 import com.yasinhajiloo.washhandsreminder.databinding.ActivityMainBinding;
 import com.yasinhajiloo.washhandsreminder.constants.AlarmMode;
-import com.yasinhajiloo.washhandsreminder.utils.BootHandler;
+import com.yasinhajiloo.washhandsreminder.receivers.BootReceiver;
 import com.yasinhajiloo.washhandsreminder.utils.MyAlarmManager;
 import com.yasinhajiloo.washhandsreminder.constants.MySharedPreferenceConstants;
 import com.yasinhajiloo.washhandsreminder.constants.TimeConstants;
@@ -44,8 +45,6 @@ public class MainActivity extends AppCompatActivity {
     boolean status = false;
 
     private Intent mIntent;
-
-    private BootHandler mBootHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,9 +77,6 @@ public class MainActivity extends AppCompatActivity {
 
         mSharedViewModel.setDataTime(savedTime);
 
-
-//        mBootHandler = new BootHandler(this);
-
         mSharedViewModel.getDataTime().observe(this, new Observer<Long>() {
             @Override
             public void onChanged(Long aLong) {
@@ -89,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
                             SystemClock.elapsedRealtime() + aLong,
                             aLong,
                             MyAlarmManager.getPendingIntent(getApplicationContext(),
-                            PendingIntent.FLAG_UPDATE_CURRENT));
+                                    PendingIntent.FLAG_UPDATE_CURRENT));
                     mBinding.tvMainStatus.setText(TimeDefinerString.getTimeDefiner(aLong));
                 } else
                     mBinding.tvMainStatus.setText(TimeDefinerString.getTimeDefiner(0));
@@ -156,7 +152,15 @@ public class MainActivity extends AppCompatActivity {
                 mSharedViewModel.setDataTime(0);
                 mSharedViewModel.setAlarmStatus(false);
                 if (alarmManager != null) {
-//                    mBootHandler.disableReceiver();
+
+                    //disable receiver
+                    ComponentName receiver = new ComponentName(this, BootReceiver.class);
+                    PackageManager pm = getPackageManager();
+
+                    pm.setComponentEnabledSetting(receiver,
+                            PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+                            PackageManager.DONT_KILL_APP);
+
                     PendingIntent pendingIntent = MyAlarmManager.getPendingIntent(getApplicationContext(), PendingIntent.FLAG_UPDATE_CURRENT);
                     alarmManager.cancel(pendingIntent);
                     pendingIntent.cancel();
@@ -167,7 +171,15 @@ public class MainActivity extends AppCompatActivity {
             case OFF:
                 animateSwitchToggle(ANIM_ON_START, ANIM_ON_END);
                 mAlarmMode = AlarmMode.ON;
-//                mBootHandler.enableReceiver();
+
+                //enable receiver
+                ComponentName receiver = new ComponentName(this, BootReceiver.class);
+                PackageManager pm = getPackageManager();
+
+                pm.setComponentEnabledSetting(receiver,
+                        PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+                        PackageManager.DONT_KILL_APP);
+
                 if (savedTime > 0) {
                     mSharedViewModel.setAlarmStatus(true);
                     mSharedViewModel.setDataTime(savedTime);
