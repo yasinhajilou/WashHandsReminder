@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
         mSharedViewModel.setDataTime(savedTime);
 
 
-        mBootHandler = new BootHandler(this);
+//        mBootHandler = new BootHandler(this);
 
         mSharedViewModel.getDataTime().observe(this, new Observer<Long>() {
             @Override
@@ -156,7 +156,7 @@ public class MainActivity extends AppCompatActivity {
                 mSharedViewModel.setDataTime(0);
                 mSharedViewModel.setAlarmStatus(false);
                 if (alarmManager != null) {
-                    mBootHandler.disableReceiver();
+//                    mBootHandler.disableReceiver();
                     PendingIntent pendingIntent = MyAlarmManager.getPendingIntent(getApplicationContext(), PendingIntent.FLAG_UPDATE_CURRENT);
                     alarmManager.cancel(pendingIntent);
                     pendingIntent.cancel();
@@ -167,7 +167,7 @@ public class MainActivity extends AppCompatActivity {
             case OFF:
                 animateSwitchToggle(ANIM_ON_START, ANIM_ON_END);
                 mAlarmMode = AlarmMode.ON;
-                mBootHandler.enableReceiver();
+//                mBootHandler.enableReceiver();
                 if (savedTime > 0) {
                     mSharedViewModel.setAlarmStatus(true);
                     mSharedViewModel.setDataTime(savedTime);
