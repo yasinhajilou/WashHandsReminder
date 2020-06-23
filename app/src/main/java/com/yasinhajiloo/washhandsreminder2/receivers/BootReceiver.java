@@ -1,4 +1,4 @@
-package com.yasinhajiloo.washhandsreminder.receivers;
+package com.yasinhajiloo.washhandsreminder2.receivers;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -8,12 +8,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.SystemClock;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.yasinhajiloo.washhandsreminder.constants.MySharedPreferenceConstants;
-import com.yasinhajiloo.washhandsreminder.utils.MyAlarmManager;
-
-import java.util.Objects;
+import com.yasinhajiloo.washhandsreminder2.constants.MySharedPreferenceConstants;
+import com.yasinhajiloo.washhandsreminder2.utils.MyAlarmManager;
 
 public class BootReceiver extends BroadcastReceiver {
 

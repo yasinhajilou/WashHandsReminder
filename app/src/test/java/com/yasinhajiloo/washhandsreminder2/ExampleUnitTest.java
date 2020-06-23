@@ -1,4 +1,4 @@
-package com.yasinhajiloo.washhandsreminder;
+package com.yasinhajiloo.washhandsreminder2;
 
 import org.junit.Test;
 

@@ -1,11 +1,11 @@
-package com.yasinhajiloo.washhandsreminder.utils;
+package com.yasinhajiloo.washhandsreminder2.utils;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 
-import com.yasinhajiloo.washhandsreminder.receivers.AlarmReceiver;
+import com.yasinhajiloo.washhandsreminder2.receivers.AlarmReceiver;
 
 public class MyAlarmManager {
 

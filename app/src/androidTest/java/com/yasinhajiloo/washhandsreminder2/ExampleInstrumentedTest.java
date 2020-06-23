@@ -1,4 +1,4 @@
-package com.yasinhajiloo.washhandsreminder;
+package com.yasinhajiloo.washhandsreminder2;
 
 import android.content.Context;
 
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
     public void useAppContext() {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        assertEquals("com.yasinhajiloo.washhandsreminder", appContext.getPackageName());
+        assertEquals("com.yasinhajiloo.washhandsreminder2", appContext.getPackageName());
     }
 }

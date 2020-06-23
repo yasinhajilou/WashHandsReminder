@@ -1,4 +1,4 @@
-package com.yasinhajiloo.washhandsreminder.views;
+package com.yasinhajiloo.washhandsreminder2.views;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
@@ -16,15 +16,15 @@ import android.os.SystemClock;
 import android.view.View;
 import android.widget.Toast;
 
-import com.yasinhajiloo.washhandsreminder.receivers.AlarmReceiver;
-import com.yasinhajiloo.washhandsreminder.SharedViewModel;
-import com.yasinhajiloo.washhandsreminder.databinding.ActivityMainBinding;
-import com.yasinhajiloo.washhandsreminder.constants.AlarmMode;
-import com.yasinhajiloo.washhandsreminder.receivers.BootReceiver;
-import com.yasinhajiloo.washhandsreminder.utils.MyAlarmManager;
-import com.yasinhajiloo.washhandsreminder.constants.MySharedPreferenceConstants;
-import com.yasinhajiloo.washhandsreminder.constants.TimeConstants;
-import com.yasinhajiloo.washhandsreminder.utils.TimeDefinerString;
+import com.yasinhajiloo.washhandsreminder2.receivers.AlarmReceiver;
+import com.yasinhajiloo.washhandsreminder2.SharedViewModel;
+import com.yasinhajiloo.washhandsreminder2.databinding.ActivityMainBinding;
+import com.yasinhajiloo.washhandsreminder2.constants.AlarmMode;
+import com.yasinhajiloo.washhandsreminder2.receivers.BootReceiver;
+import com.yasinhajiloo.washhandsreminder2.utils.MyAlarmManager;
+import com.yasinhajiloo.washhandsreminder2.constants.MySharedPreferenceConstants;
+import com.yasinhajiloo.washhandsreminder2.constants.TimeConstants;
+import com.yasinhajiloo.washhandsreminder2.utils.TimeDefinerString;
 
 public class MainActivity extends AppCompatActivity {
 

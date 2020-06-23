@@ -1,4 +1,4 @@
-package com.yasinhajiloo.washhandsreminder.views;
+package com.yasinhajiloo.washhandsreminder2.views;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -10,12 +10,12 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-import com.yasinhajiloo.washhandsreminder.R;
-import com.yasinhajiloo.washhandsreminder.SharedViewModel;
-import com.yasinhajiloo.washhandsreminder.databinding.FragmentAlarmEditorDialogBinding;
-import com.yasinhajiloo.washhandsreminder.constants.MySharedPreferenceConstants;
-import com.yasinhajiloo.washhandsreminder.constants.TimeConstants;
-import com.yasinhajiloo.washhandsreminder.utils.TimeDefinerString;
+import com.yasinhajiloo.washhandsreminder2.R;
+import com.yasinhajiloo.washhandsreminder2.SharedViewModel;
+import com.yasinhajiloo.washhandsreminder2.databinding.FragmentAlarmEditorDialogBinding;
+import com.yasinhajiloo.washhandsreminder2.constants.MySharedPreferenceConstants;
+import com.yasinhajiloo.washhandsreminder2.constants.TimeConstants;
+import com.yasinhajiloo.washhandsreminder2.utils.TimeDefinerString;
 
 import android.view.LayoutInflater;
 import android.view.View;

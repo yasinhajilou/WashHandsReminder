@@ -1,6 +1,6 @@
-package com.yasinhajiloo.washhandsreminder.utils;
+package com.yasinhajiloo.washhandsreminder2.utils;
 
-import com.yasinhajiloo.washhandsreminder.constants.TimeConstants;
+import com.yasinhajiloo.washhandsreminder2.constants.TimeConstants;
 
 public class TimeDefinerString {
     private static String halfHour = "هر 30 دقیقه";

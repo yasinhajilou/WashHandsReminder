@@ -1,4 +1,4 @@
-package com.yasinhajiloo.washhandsreminder.receivers;
+package com.yasinhajiloo.washhandsreminder2.receivers;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -11,8 +11,8 @@ import android.os.Build;
 
 import androidx.core.app.NotificationCompat;
 
-import com.yasinhajiloo.washhandsreminder.R;
-import com.yasinhajiloo.washhandsreminder.views.MainActivity;
+import com.yasinhajiloo.washhandsreminder2.R;
+import com.yasinhajiloo.washhandsreminder2.views.MainActivity;
 
 public class AlarmReceiver extends BroadcastReceiver {
 
